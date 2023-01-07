@@ -1,6 +1,8 @@
-.container {
+.main-container {
   display: flex;
   flex-direction: column;
+  width: 70%;
+  margin: 100px auto;
 }
 
 .container > * {

@@ -17,11 +17,39 @@ import { arrayMove, insertAtIndex, removeAtIndex } from "./utils/array";
 import "./App.css";
 
 function App() {
-  const [itemGroups, setItemGroups] = useState({
-    group1: ["1", "2", "3"],
-    group2: ["4", "5", "6"],
-    group3: ["7", "8", "9"],
-  });
+  const [itemGroups, setItemGroups] = useState([
+    { color: "yellow", items: [], tierName: "S", id: 1 },
+    { color: "green", items: [], tierName: "A", id: 2 },
+    { color: "teal", items: [], tierName: "B", id: 3 },
+    { color: "blue", items: [], tierName: "C", id: 4 },
+    { color: "orange", items: [], tierName: "D", id: 5 },
+    {
+      color: "red",
+      items: [],
+      tierName: "F",
+      id: 6,
+    },
+    {
+      color: "white",
+      items: [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+      ],
+      tierName: "Starting Tier",
+      id: 7,
+    },
+  ]);
   const [activeId, setActiveId] = useState(null);
 
   const sensors = useSensors(
@@ -51,9 +79,8 @@ function App() {
         const activeIndex = active.data.current.sortable.index;
         const overIndex =
           over.id in itemGroups
-            ? itemGroups[overContainer].length + 1
+            ? itemGroups[overContainer - 1].items.length + 1
             : over.data.current.sortable.index;
-
         return moveBetweenContainers(
           itemGroups,
           activeContainer,
@@ -71,27 +98,24 @@ function App() {
       setActiveId(null);
       return;
     }
-
     if (active.id !== over.id) {
       const activeContainer = active.data.current.sortable.containerId;
       const overContainer = over.data.current?.sortable.containerId || over.id;
       const activeIndex = active.data.current.sortable.index;
-      const overIndex =
-        over.id in itemGroups
-          ? itemGroups[overContainer].length + 1
-          : over.data.current.sortable.index;
-
+      const overIndex = over.data.current.sortable.index;
       setItemGroups((itemGroups) => {
         let newItems;
         if (activeContainer === overContainer) {
-          newItems = {
-            ...itemGroups,
-            [overContainer]: arrayMove(
-              itemGroups[overContainer],
-              activeIndex,
-              overIndex
-            ),
-          };
+          newItems = itemGroups.map((group) => {
+            if (overContainer === group.id) {
+              return {
+                ...group,
+                items: arrayMove(group.items, activeIndex, overIndex),
+              };
+            } else {
+              return group;
+            }
+          });
         } else {
           newItems = moveBetweenContainers(
             itemGroups,
@@ -116,13 +140,23 @@ function App() {
     activeIndex,
     overContainer,
     overIndex,
-    item
+    activeItemID
   ) => {
-    return {
-      ...items,
-      [activeContainer]: removeAtIndex(items[activeContainer], activeIndex),
-      [overContainer]: insertAtIndex(items[overContainer], overIndex, item),
-    };
+    return items.map((item) => {
+      if (activeContainer === item.id) {
+        return {
+          ...item,
+          items: removeAtIndex(item.items, activeIndex),
+        };
+      } else if (overContainer === item.id) {
+        return {
+          ...item,
+          items: insertAtIndex(item.items, overIndex, activeItemID),
+        };
+      } else {
+        return item;
+      }
+    });
   };
 
   return (
@@ -133,13 +167,13 @@ function App() {
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
     >
-      <div className="container">
-        {Object.keys(itemGroups).map((group) => (
+      <div className="main-container">
+        {itemGroups.map((group) => (
           <Droppable
-            id={group}
-            items={itemGroups[group]}
+            id={group.id}
+            items={group}
             activeId={activeId}
-            key={group}
+            key={group.id}
           />
         ))}
       </div>

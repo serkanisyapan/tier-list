@@ -2,7 +2,7 @@
 
 Todos:
 
-- [ ] Add tiers to rank each item
+- [x] Add tiers to rank each item
 - [ ] Add images for a topic to rank
 - [ ] User can change tier names, colors
 - [ ] User can add more tiers, delete a tier and can reset a tier.

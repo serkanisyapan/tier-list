@@ -1,6 +1,12 @@
 .item {
   box-sizing: border-box;
-  height: 100px;
+  height: 80px;
+  width: 80px;
   padding-left: 5px;
   font-size: 24px;
+}
+
+.item img {
+  width: 80px;
+  height: 80px;
 }

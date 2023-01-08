@@ -16,22 +16,20 @@ import smashcharacters from "./smashcharacters.json";
 import "./App.css";
 
 function App() {
-  const [itemGroups, setItemGroups] = useState(
-    JSON.parse(localStorage.getItem("tier-list")) || [
-      { color: "yellow", items: [], tierName: "S", id: 1 },
-      { color: "green", items: [], tierName: "A", id: 2 },
-      { color: "teal", items: [], tierName: "B", id: 3 },
-      { color: "blue", items: [], tierName: "C", id: 4 },
-      { color: "orange", items: [], tierName: "D", id: 5 },
-      { color: "red", items: [], tierName: "F", id: 6 },
-      {
-        color: "#8ef1c2",
-        tierName: "Unranked",
-        items: smashcharacters,
-        id: 7,
-      },
-    ]
-  );
+  const [itemGroups, setItemGroups] = useState([
+    { color: "#FFD700", items: [], tierName: "S", id: 1 },
+    { color: "#e8d13c", items: [], tierName: "A", id: 2 },
+    { color: "#9C9C9C", items: [], tierName: "B", id: 3 },
+    { color: "#C0C0C0", items: [], tierName: "C", id: 4 },
+    { color: "#CD7F32", items: [], tierName: "D", id: 5 },
+    { color: "#B87333", items: [], tierName: "F", id: 6 },
+    {
+      color: "#8ef1c2",
+      tierName: "Unranked",
+      items: smashcharacters,
+      id: 7,
+    },
+  ]);
   const [activeId, setActiveId] = useState(null);
 
   useEffect(() => {
@@ -67,8 +65,6 @@ function App() {
           over.id in itemGroups
             ? itemGroups[overContainer - 1].items.length + 1
             : over.data.current.sortable.index;
-        console.log("active:", active);
-        console.log("over:", over);
         return moveBetweenContainers(
           itemGroups,
           activeContainer,
@@ -150,6 +146,16 @@ function App() {
     });
   };
 
+  const handleEdit = (event, id, change) => {
+    const updateTiers = itemGroups.map((item) => {
+      if (id === item.id) {
+        return { ...item, [change]: event.target.value };
+      }
+      return item;
+    });
+    setItemGroups(updateTiers);
+  };
+
   return (
     <DndContext
       sensors={sensors}
@@ -164,6 +170,7 @@ function App() {
             id={group.id}
             items={group}
             activeId={activeId}
+            handleEdit={handleEdit}
             key={group.id}
           />
         ))}

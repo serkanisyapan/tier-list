@@ -1,22 +1,38 @@
 .droppable {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(10, 1fr);
   width: 100%;
   list-style-type: none;
+  padding: 5px;
   background-color: rgba(39, 39, 39, 0.831);
   border: 1px solid black;
 }
 
 .droppable-container {
   display: flex;
-  min-height: 102px;
+  min-height: 92px;
 }
 
 .tier-names {
   width: 100px;
   display: flex;
+  padding: 8px;
   justify-content: center;
   align-items: center;
-  font-size: 24px;
+  font-size: 20px;
   text-align: center;
+  word-break: break-all;
+}
+
+.settings-button {
+  background-color: rgba(0, 0, 0, 0.856);
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+}
+
+.settings-button img:hover {
+  cursor: pointer;
 }

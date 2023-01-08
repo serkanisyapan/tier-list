@@ -1,7 +1,6 @@
 .droppable {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
   width: 100%;
   list-style-type: none;
   background-color: rgba(39, 39, 39, 0.831);
@@ -10,7 +9,7 @@
 
 .droppable-container {
   display: flex;
-  min-height: 100px;
+  min-height: 102px;
 }
 
 .tier-names {
@@ -18,7 +17,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: red;
   font-size: 24px;
-  word-break: break-all;
+  text-align: center;
 }

@@ -1,10 +1,6 @@
 .item {
   box-sizing: border-box;
-  width: 116.3px;
-  min-height: 100px;
+  height: 100px;
   padding-left: 5px;
-  user-select: none;
-  background-color: #810ca8;
-  border: 1px solid black;
   font-size: 24px;
 }

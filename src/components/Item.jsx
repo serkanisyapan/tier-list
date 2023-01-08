@@ -7,7 +7,7 @@ const Item = ({ id, dragOverlay }) => {
 
   return (
     <div style={style} className="item">
-      Item {id}
+      <img src={id} alt="pokemonimage" />
     </div>
   );
 };

@@ -1,5 +1,8 @@
 import { useDroppable } from "@dnd-kit/core";
-import { rectSortingStrategy, SortableContext } from "@dnd-kit/sortable";
+import {
+  horizontalListSortingStrategy,
+  SortableContext,
+} from "@dnd-kit/sortable";
 
 import SortableItem from "./SortableItem";
 
@@ -7,7 +10,7 @@ import "./Droppable.css";
 
 const Droppable = ({ id, items }) => {
   const { setNodeRef } = useDroppable({ id });
-  const isStartingTier = items.tierName === "Starting Tier";
+  const isStartingTier = items.tierName === "Unranked";
   return (
     <div
       style={{
@@ -22,7 +25,7 @@ const Droppable = ({ id, items }) => {
       <SortableContext
         id={id}
         items={items.items}
-        strategy={rectSortingStrategy}
+        strategy={horizontalListSortingStrategy}
       >
         <ul className="droppable" ref={setNodeRef}>
           {items.items.map((item) => (

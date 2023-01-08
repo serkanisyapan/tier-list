@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   DndContext,
   DragOverlay,
@@ -9,48 +9,34 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
-
+import { arrayMove, insertAtIndex, removeAtIndex } from "./utils/array";
 import Droppable from "./components/Droppable";
 import Item from "./components/Item";
-import { arrayMove, insertAtIndex, removeAtIndex } from "./utils/array";
-
+import smashcharacters from "./smashcharacters.json";
 import "./App.css";
 
 function App() {
-  const [itemGroups, setItemGroups] = useState([
-    { color: "yellow", items: [], tierName: "S", id: 1 },
-    { color: "green", items: [], tierName: "A", id: 2 },
-    { color: "teal", items: [], tierName: "B", id: 3 },
-    { color: "blue", items: [], tierName: "C", id: 4 },
-    { color: "orange", items: [], tierName: "D", id: 5 },
-    {
-      color: "red",
-      items: [],
-      tierName: "F",
-      id: 6,
-    },
-    {
-      color: "white",
-      items: [
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-        "9",
-        "10",
-        "11",
-        "12",
-        "13",
-      ],
-      tierName: "Starting Tier",
-      id: 7,
-    },
-  ]);
+  const [itemGroups, setItemGroups] = useState(
+    JSON.parse(localStorage.getItem("tier-list")) || [
+      { color: "yellow", items: [], tierName: "S", id: 1 },
+      { color: "green", items: [], tierName: "A", id: 2 },
+      { color: "teal", items: [], tierName: "B", id: 3 },
+      { color: "blue", items: [], tierName: "C", id: 4 },
+      { color: "orange", items: [], tierName: "D", id: 5 },
+      { color: "red", items: [], tierName: "F", id: 6 },
+      {
+        color: "#8ef1c2",
+        tierName: "Unranked",
+        items: smashcharacters,
+        id: 7,
+      },
+    ]
+  );
   const [activeId, setActiveId] = useState(null);
+
+  useEffect(() => {
+    localStorage.setItem("tier-list", JSON.stringify(itemGroups));
+  }, [itemGroups]);
 
   const sensors = useSensors(
     useSensor(MouseSensor),
@@ -81,6 +67,8 @@ function App() {
           over.id in itemGroups
             ? itemGroups[overContainer - 1].items.length + 1
             : over.data.current.sortable.index;
+        console.log("active:", active);
+        console.log("over:", over);
         return moveBetweenContainers(
           itemGroups,
           activeContainer,
@@ -102,7 +90,10 @@ function App() {
       const activeContainer = active.data.current.sortable.containerId;
       const overContainer = over.data.current?.sortable.containerId || over.id;
       const activeIndex = active.data.current.sortable.index;
-      const overIndex = over.data.current.sortable.index;
+      const overIndex =
+        over.id in itemGroups
+          ? itemGroups[overContainer - 1].items.length + 1
+          : over.data.current.sortable.index;
       setItemGroups((itemGroups) => {
         let newItems;
         if (activeContainer === overContainer) {

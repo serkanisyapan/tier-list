@@ -9,31 +9,29 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
-import { arrayMove, insertAtIndex, removeAtIndex } from "./utils/array";
+import { arrayMove, moveBetweenContainers } from "./utils/array";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import Droppable from "./components/Droppable";
 import Item from "./components/Item";
 import smashcharacters from "./smashcharacters.json";
 import "./App.css";
 
-const initialState = [
-  { color: "#FFD700", items: [], tierName: "S", id: 1 },
-  { color: "#e8d13c", items: [], tierName: "A", id: 2 },
-  { color: "#C0C0C0", items: [], tierName: "B", id: 4 },
-  { color: "#9C9C9C", items: [], tierName: "C", id: 3 },
-  { color: "#CD7F32", items: [], tierName: "D", id: 5 },
-  { color: "#B87333", items: [], tierName: "F", id: 6 },
-  {
-    color: "#8ef1c2",
-    tierName: "Unranked",
-    items: smashcharacters,
-    id: 7,
-  },
-];
-
 function App() {
   const [tiers, setTiers] = useState(
-    JSON.parse(localStorage.getItem("tier-list")) || initialState
+    JSON.parse(localStorage.getItem("tier-list")) || [
+      { color: "#FFD700", items: [], tierName: "S", id: 1 },
+      { color: "#e8d13c", items: [], tierName: "A", id: 2 },
+      { color: "#C0C0C0", items: [], tierName: "B", id: 3 },
+      { color: "#9C9C9C", items: [], tierName: "C", id: 4 },
+      { color: "#CD7F32", items: [], tierName: "D", id: 5 },
+      { color: "#B87333", items: [], tierName: "F", id: 6 },
+      {
+        color: "#8ef1c2",
+        tierName: "Unranked",
+        items: smashcharacters,
+        id: 7,
+      },
+    ]
   );
   const [activeId, setActiveId] = useState(null);
   const [parent, enableAnimations] = useAutoAnimate();
@@ -56,7 +54,6 @@ function App() {
 
   const handleDragOver = ({ active, over }) => {
     const overId = over?.id;
-    console.log(over);
 
     if (!overId) {
       return;
@@ -128,31 +125,6 @@ function App() {
     setActiveId(null);
   };
 
-  const moveBetweenContainers = (
-    items,
-    activeContainer,
-    activeIndex,
-    overContainer,
-    overIndex,
-    activeItemID
-  ) => {
-    return items.map((item) => {
-      if (activeContainer === item.id) {
-        return {
-          ...item,
-          items: removeAtIndex(item.items, activeIndex),
-        };
-      } else if (overContainer === item.id) {
-        return {
-          ...item,
-          items: insertAtIndex(item.items, overIndex, activeItemID),
-        };
-      } else {
-        return item;
-      }
-    });
-  };
-
   const handleEdit = (event, id, change) => {
     const updateTiers = tiers.map((item) => {
       if (id === item.id) {
@@ -183,6 +155,24 @@ function App() {
     }
   };
 
+  const handleReorder = (item, order) => {
+    let copyTiers = [...tiers];
+    const itemIndex = copyTiers.indexOf(item);
+    if (order === "goDown") {
+      if (itemIndex < copyTiers.length - 2) {
+        const getItem = copyTiers.splice(itemIndex, 1)[0];
+        copyTiers.splice(itemIndex + 1, 0, getItem);
+      }
+    }
+    if (order === "goUp") {
+      if (itemIndex > 0) {
+        const getItem = copyTiers.splice(itemIndex, 1)[0];
+        copyTiers.splice(itemIndex - 1, 0, getItem);
+      }
+    }
+    setTiers(copyTiers);
+  };
+
   return (
     <DndContext
       sensors={sensors}
@@ -202,6 +192,7 @@ function App() {
             activeId={activeId}
             handleEdit={handleEdit}
             handleChangeOnTier={handleChangeOnTier}
+            handleReorder={handleReorder}
             key={group.id}
           />
         ))}

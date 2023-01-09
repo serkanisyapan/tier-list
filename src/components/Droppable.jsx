@@ -8,7 +8,13 @@ import settingsButton from "../assets/settings.png";
 import SortableItem from "./SortableItem";
 import "./Droppable.css";
 
-const Droppable = ({ id, items, handleEdit, handleChangeOnTier }) => {
+const Droppable = ({
+  id,
+  items,
+  handleEdit,
+  handleChangeOnTier,
+  handleReorder,
+}) => {
   const { setNodeRef } = useDroppable({ id });
   const isStartingTier = items.tierName === "Unranked";
   const [showSettingsModal, setShowSettingsModal] = useState(false);
@@ -51,7 +57,7 @@ const Droppable = ({ id, items, handleEdit, handleChangeOnTier }) => {
       </SortableContext>
       {!isStartingTier ? (
         <span className="settings">
-          <span className="arrows">
+          <span onClick={() => handleReorder(items, "goUp")} className="arrows">
             <UpArrow size="16px" />
           </span>
           <img
@@ -59,7 +65,10 @@ const Droppable = ({ id, items, handleEdit, handleChangeOnTier }) => {
             src={settingsButton}
             alt="change tier settings"
           />
-          <span className="arrows">
+          <span
+            onClick={() => handleReorder(items, "goDown")}
+            className="arrows"
+          >
             <DownArrow size="16px" />
           </span>
         </span>

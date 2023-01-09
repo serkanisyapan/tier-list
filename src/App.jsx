@@ -10,6 +10,7 @@ import {
 } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { arrayMove, insertAtIndex, removeAtIndex } from "./utils/array";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 import Droppable from "./components/Droppable";
 import Item from "./components/Item";
 import smashcharacters from "./smashcharacters.json";
@@ -31,14 +32,15 @@ const initialState = [
 ];
 
 function App() {
-  const [itemGroups, setItemGroups] = useState(
+  const [tiers, setTiers] = useState(
     JSON.parse(localStorage.getItem("tier-list")) || initialState
   );
   const [activeId, setActiveId] = useState(null);
+  const [parent, enableAnimations] = useAutoAnimate();
 
   useEffect(() => {
-    localStorage.setItem("tier-list", JSON.stringify(itemGroups));
-  }, [itemGroups]);
+    localStorage.setItem("tier-list", JSON.stringify(tiers));
+  }, [tiers]);
 
   const sensors = useSensors(
     useSensor(MouseSensor),
@@ -64,14 +66,14 @@ function App() {
     const overContainer = over.data.current?.sortable.containerId || over.id;
 
     if (activeContainer !== overContainer) {
-      setItemGroups((itemGroups) => {
+      setTiers((tiers) => {
         const activeIndex = active.data.current.sortable.index;
         const overIndex =
-          over.id in itemGroups
-            ? itemGroups[overContainer - 1].items.length + 1
+          over.id in tiers
+            ? tiers[overContainer].items.length + 1
             : over.data.current?.sortable.index || over.id;
         return moveBetweenContainers(
-          itemGroups,
+          tiers,
           activeContainer,
           activeIndex,
           overContainer,
@@ -92,13 +94,13 @@ function App() {
       const overContainer = over.data.current?.sortable.containerId || over.id;
       const activeIndex = active.data.current.sortable.index;
       const overIndex =
-        over.id in itemGroups
-          ? itemGroups[overContainer - 1].items.length + 1
+        over.id in tiers
+          ? tiers[overContainer].items.length + 1
           : over.data.current?.sortable.index;
-      setItemGroups((itemGroups) => {
+      setTiers((tiers) => {
         let newItems;
         if (activeContainer === overContainer) {
-          newItems = itemGroups.map((group) => {
+          newItems = tiers.map((group) => {
             if (overContainer === group.id) {
               return {
                 ...group,
@@ -110,7 +112,7 @@ function App() {
           });
         } else {
           newItems = moveBetweenContainers(
-            itemGroups,
+            tiers,
             activeContainer,
             activeIndex,
             overContainer,
@@ -152,23 +154,23 @@ function App() {
   };
 
   const handleEdit = (event, id, change) => {
-    const updateTiers = itemGroups.map((item) => {
+    const updateTiers = tiers.map((item) => {
       if (id === item.id) {
         return { ...item, [change]: event.target.value };
       }
       return item;
     });
-    setItemGroups(updateTiers);
+    setTiers(updateTiers);
   };
 
-  const handleChangeTier = (tier, change) => {
+  const handleChangeOnTier = (tier, change) => {
     if (change === "delete") {
-      const deleteTier = itemGroups.filter((item) => item.id !== tier.id);
-      setItemGroups(deleteTier);
+      const deleteTier = tiers.filter((item) => item.id !== tier.id);
+      setTiers(deleteTier);
     }
     if (tier.items) {
       const getTierItems = [...tier.items];
-      setItemGroups((prev) =>
+      setTiers((prev) =>
         prev.map((item) => {
           if (item.id === tier.id) {
             return { ...item, items: [] };
@@ -189,14 +191,17 @@ function App() {
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
     >
-      <div className="main-container">
-        {itemGroups.map((group) => (
+      <button onClick={() => localStorage.removeItem("tier-list")}>
+        delete storage
+      </button>
+      <div ref={parent} className="main-container">
+        {tiers.map((group) => (
           <Droppable
             id={group.id}
             items={group}
             activeId={activeId}
             handleEdit={handleEdit}
-            handleChangeTier={handleChangeTier}
+            handleChangeOnTier={handleChangeOnTier}
             key={group.id}
           />
         ))}

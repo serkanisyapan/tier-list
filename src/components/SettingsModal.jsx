@@ -4,7 +4,7 @@ export const SettingsModal = ({
   item,
   handleShowModal,
   handleEdit,
-  handleChangeTier,
+  handleChangeOnTier,
 }) => {
   return (
     <>
@@ -33,13 +33,13 @@ export const SettingsModal = ({
         </div>
         <div className="buttons-section">
           <button
-            onClick={() => handleChangeTier(item, "delete")}
+            onClick={() => handleChangeOnTier(item, "delete")}
             className="button delete-button"
           >
             Delete Tier
           </button>
           <button
-            onClick={() => handleChangeTier(item, "removeItems")}
+            onClick={() => handleChangeOnTier(item, "removeItems")}
             className="button remove-items-button"
           >
             Remove Items

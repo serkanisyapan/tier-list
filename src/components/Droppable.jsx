@@ -1,16 +1,14 @@
 import { useState } from "react";
 import { useDroppable } from "@dnd-kit/core";
-import {
-  horizontalListSortingStrategy,
-  SortableContext,
-} from "@dnd-kit/sortable";
+import { rectSortingStrategy, SortableContext } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import { SettingsModal } from "./SettingsModal";
+import { DownArrow, UpArrow } from "./ArrowIcons";
 import settingsButton from "../assets/settings.png";
 import SortableItem from "./SortableItem";
 import "./Droppable.css";
 
-const Droppable = ({ id, items, handleEdit, handleChangeTier }) => {
+const Droppable = ({ id, items, handleEdit, handleChangeOnTier }) => {
   const { setNodeRef } = useDroppable({ id });
   const isStartingTier = items.tierName === "Unranked";
   const [showSettingsModal, setShowSettingsModal] = useState(false);
@@ -32,7 +30,7 @@ const Droppable = ({ id, items, handleEdit, handleChangeTier }) => {
           <SettingsModal
             item={items}
             handleEdit={handleEdit}
-            handleChangeTier={handleChangeTier}
+            handleChangeOnTier={handleChangeOnTier}
             handleShowModal={handleShowModal}
           />,
           document.body
@@ -43,7 +41,7 @@ const Droppable = ({ id, items, handleEdit, handleChangeTier }) => {
       <SortableContext
         id={id}
         items={items.items}
-        strategy={horizontalListSortingStrategy}
+        strategy={rectSortingStrategy}
       >
         <ul className="droppable" ref={setNodeRef}>
           {items.items.map((item) => (
@@ -52,12 +50,18 @@ const Droppable = ({ id, items, handleEdit, handleChangeTier }) => {
         </ul>
       </SortableContext>
       {!isStartingTier ? (
-        <span className="settings-button">
+        <span className="settings">
+          <span className="arrows">
+            <UpArrow size="16px" />
+          </span>
           <img
             onClick={() => setShowSettingsModal((prev) => !prev)}
             src={settingsButton}
             alt="change tier settings"
           />
+          <span className="arrows">
+            <DownArrow size="16px" />
+          </span>
         </span>
       ) : null}
     </div>

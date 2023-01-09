@@ -15,21 +15,25 @@ import Item from "./components/Item";
 import smashcharacters from "./smashcharacters.json";
 import "./App.css";
 
+const initialState = [
+  { color: "#FFD700", items: [], tierName: "S", id: 1 },
+  { color: "#e8d13c", items: [], tierName: "A", id: 2 },
+  { color: "#C0C0C0", items: [], tierName: "B", id: 4 },
+  { color: "#9C9C9C", items: [], tierName: "C", id: 3 },
+  { color: "#CD7F32", items: [], tierName: "D", id: 5 },
+  { color: "#B87333", items: [], tierName: "F", id: 6 },
+  {
+    color: "#8ef1c2",
+    tierName: "Unranked",
+    items: smashcharacters,
+    id: 7,
+  },
+];
+
 function App() {
-  const [itemGroups, setItemGroups] = useState([
-    { color: "#FFD700", items: [], tierName: "S", id: 1 },
-    { color: "#e8d13c", items: [], tierName: "A", id: 2 },
-    { color: "#9C9C9C", items: [], tierName: "B", id: 3 },
-    { color: "#C0C0C0", items: [], tierName: "C", id: 4 },
-    { color: "#CD7F32", items: [], tierName: "D", id: 5 },
-    { color: "#B87333", items: [], tierName: "F", id: 6 },
-    {
-      color: "#8ef1c2",
-      tierName: "Unranked",
-      items: smashcharacters,
-      id: 7,
-    },
-  ]);
+  const [itemGroups, setItemGroups] = useState(
+    JSON.parse(localStorage.getItem("tier-list")) || initialState
+  );
   const [activeId, setActiveId] = useState(null);
 
   useEffect(() => {
@@ -50,6 +54,7 @@ function App() {
 
   const handleDragOver = ({ active, over }) => {
     const overId = over?.id;
+    console.log(over);
 
     if (!overId) {
       return;
@@ -64,7 +69,7 @@ function App() {
         const overIndex =
           over.id in itemGroups
             ? itemGroups[overContainer - 1].items.length + 1
-            : over.data.current.sortable.index;
+            : over.data.current?.sortable.index || over.id;
         return moveBetweenContainers(
           itemGroups,
           activeContainer,
@@ -89,7 +94,7 @@ function App() {
       const overIndex =
         over.id in itemGroups
           ? itemGroups[overContainer - 1].items.length + 1
-          : over.data.current.sortable.index;
+          : over.data.current?.sortable.index;
       setItemGroups((itemGroups) => {
         let newItems;
         if (activeContainer === overContainer) {
@@ -156,6 +161,26 @@ function App() {
     setItemGroups(updateTiers);
   };
 
+  const handleChangeTier = (tier, change) => {
+    if (change === "delete") {
+      const deleteTier = itemGroups.filter((item) => item.id !== tier.id);
+      setItemGroups(deleteTier);
+    }
+    if (tier.items) {
+      const getTierItems = [...tier.items];
+      setItemGroups((prev) =>
+        prev.map((item) => {
+          if (item.id === tier.id) {
+            return { ...item, items: [] };
+          } else if (item.tierName === "Unranked") {
+            return { ...item, items: [...item.items, ...getTierItems] };
+          }
+          return item;
+        })
+      );
+    }
+  };
+
   return (
     <DndContext
       sensors={sensors}
@@ -171,6 +196,7 @@ function App() {
             items={group}
             activeId={activeId}
             handleEdit={handleEdit}
+            handleChangeTier={handleChangeTier}
             key={group.id}
           />
         ))}

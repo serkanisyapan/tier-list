@@ -10,7 +10,7 @@ import settingsButton from "../assets/settings.png";
 import SortableItem from "./SortableItem";
 import "./Droppable.css";
 
-const Droppable = ({ id, items, handleEdit }) => {
+const Droppable = ({ id, items, handleEdit, handleChangeTier }) => {
   const { setNodeRef } = useDroppable({ id });
   const isStartingTier = items.tierName === "Unranked";
   const [showSettingsModal, setShowSettingsModal] = useState(false);
@@ -32,6 +32,7 @@ const Droppable = ({ id, items, handleEdit }) => {
           <SettingsModal
             item={items}
             handleEdit={handleEdit}
+            handleChangeTier={handleChangeTier}
             handleShowModal={handleShowModal}
           />,
           document.body

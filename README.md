@@ -2,6 +2,8 @@
 
 ### Rank topics on how much you love or hate them
 
+### Try here: https://react-tier-list.netlify.app/
+
 Todos:
 
 - [x] Add tiers to rank each item

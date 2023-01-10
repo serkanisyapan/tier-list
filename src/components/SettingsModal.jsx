@@ -42,7 +42,7 @@ export const SettingsModal = ({
             onClick={() => handleChangeOnTier(item, "removeItems")}
             className="button remove-items-button"
           >
-            Remove Items
+            Remove Ranked Items
           </button>
         </div>
       </div>

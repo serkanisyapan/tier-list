@@ -11,27 +11,14 @@ import {
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { arrayMove, moveBetweenContainers } from "./utils/array";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
+import initialState from "./initialState";
 import Droppable from "./components/Droppable";
 import Item from "./components/Item";
-import smashcharacters from "./smashcharacters.json";
 import "./App.css";
 
 function App() {
   const [tiers, setTiers] = useState(
-    JSON.parse(localStorage.getItem("tier-list")) || [
-      { color: "#FFD700", items: [], tierName: "S", id: 1 },
-      { color: "#e8d13c", items: [], tierName: "A", id: 2 },
-      { color: "#C0C0C0", items: [], tierName: "B", id: 3 },
-      { color: "#9C9C9C", items: [], tierName: "C", id: 4 },
-      { color: "#CD7F32", items: [], tierName: "D", id: 5 },
-      { color: "#B87333", items: [], tierName: "F", id: 6 },
-      {
-        color: "#8ef1c2",
-        tierName: "Unranked",
-        items: smashcharacters,
-        id: 7,
-      },
-    ]
+    JSON.parse(localStorage.getItem("tier-list")) || initialState
   );
   const [activeId, setActiveId] = useState(null);
   const [parent, enableAnimations] = useAutoAnimate();
@@ -155,16 +142,16 @@ function App() {
     }
   };
 
-  const handleReorder = (item, order) => {
+  const handleReorder = (item, changeOrder) => {
     let copyTiers = [...tiers];
     const itemIndex = copyTiers.indexOf(item);
-    if (order === "goDown") {
+    if (changeOrder === "goDown") {
       if (itemIndex < copyTiers.length - 2) {
         const getItem = copyTiers.splice(itemIndex, 1)[0];
         copyTiers.splice(itemIndex + 1, 0, getItem);
       }
     }
-    if (order === "goUp") {
+    if (changeOrder === "goUp") {
       if (itemIndex > 0) {
         const getItem = copyTiers.splice(itemIndex, 1)[0];
         copyTiers.splice(itemIndex - 1, 0, getItem);
@@ -181,9 +168,6 @@ function App() {
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
     >
-      <button onClick={() => localStorage.removeItem("tier-list")}>
-        delete storage
-      </button>
       <div ref={parent} className="main-container">
         {tiers.map((group) => (
           <Droppable
@@ -196,6 +180,12 @@ function App() {
             key={group.id}
           />
         ))}
+        <button
+          onClick={() => setTiers(initialState)}
+          className="reset-all-button"
+        >
+          Reset All Tiers
+        </button>
       </div>
       <DragOverlay>
         {activeId ? <Item id={activeId} dragOverlay /> : null}

@@ -3,10 +3,9 @@ import { useDroppable } from "@dnd-kit/core";
 import { rectSortingStrategy, SortableContext } from "@dnd-kit/sortable";
 import { createPortal } from "react-dom";
 import { SettingsModal } from "./SettingsModal";
-import { DownArrow, UpArrow } from "./ArrowIcons";
-import settingsButton from "../assets/settings.png";
 import SortableItem from "./SortableItem";
 import "./Droppable.css";
+import { Settings } from "./Settings";
 
 const Droppable = ({
   id,
@@ -56,22 +55,11 @@ const Droppable = ({
         </ul>
       </SortableContext>
       {!isStartingTier ? (
-        <span className="settings">
-          <span onClick={() => handleReorder(items, "goUp")} className="arrows">
-            <UpArrow size="16px" />
-          </span>
-          <img
-            onClick={() => setShowSettingsModal((prev) => !prev)}
-            src={settingsButton}
-            alt="change tier settings"
-          />
-          <span
-            onClick={() => handleReorder(items, "goDown")}
-            className="arrows"
-          >
-            <DownArrow size="16px" />
-          </span>
-        </span>
+        <Settings
+          items={items}
+          handleReorder={handleReorder}
+          handleShowModal={handleShowModal}
+        />
       ) : null}
     </div>
   );

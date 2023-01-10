@@ -112,10 +112,10 @@ function App() {
     setActiveId(null);
   };
 
-  const handleEdit = (event, id, change) => {
+  const handleEdit = (id, color, name) => {
     const updateTiers = tiers.map((item) => {
       if (id === item.id) {
-        return { ...item, [change]: event.target.value };
+        return { ...item, color, tierName: name };
       }
       return item;
     });

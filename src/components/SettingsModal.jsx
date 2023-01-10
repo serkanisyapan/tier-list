@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./SettingsModal.css";
 
 export const SettingsModal = ({
@@ -6,6 +7,8 @@ export const SettingsModal = ({
   handleEdit,
   handleChangeOnTier,
 }) => {
+  const [tierColor, setTierColor] = useState(item.color);
+  const [tierName, setTierName] = useState(item.tierName);
   return (
     <>
       <div onClick={handleShowModal} className="backdrop"></div>
@@ -17,8 +20,8 @@ export const SettingsModal = ({
             <input
               type="color"
               id="tier-color"
-              onChange={(event) => handleEdit(event, item.id, "color")}
-              value={item.color}
+              onChange={(event) => setTierColor(event.target.value)}
+              value={tierColor}
             />
           </div>
           <div className="section">
@@ -26,12 +29,18 @@ export const SettingsModal = ({
             <input
               type="text"
               id="tier-name"
-              onChange={(event) => handleEdit(event, item.id, "tierName")}
-              value={item.tierName}
+              onChange={(event) => setTierName(event.target.value)}
+              value={tierName}
             />
           </div>
         </div>
         <div className="buttons-section">
+          <button
+            onClick={() => handleEdit(item.id, tierColor, tierName)}
+            className="button save-button"
+          >
+            Save Changes
+          </button>
           <button
             onClick={() => handleChangeOnTier(item, "delete")}
             className="button delete-button"

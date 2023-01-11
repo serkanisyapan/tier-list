@@ -11,7 +11,7 @@ Todos:
 - [x] User can change tier names, colors
 - [x] User can delete and reset a tier
 - [x] User can order of the tiers
-- [ ] User can add more tiers
+- [x] User can add more tiers
 - [ ] User can download tier list as an image
 
 dnd logic from: https://codesandbox.io/s/playground-0mine?file=/src/App.jsx

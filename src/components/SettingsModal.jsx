@@ -6,6 +6,7 @@ export const SettingsModal = ({
   handleShowModal,
   handleEdit,
   handleChangeOnTier,
+  handleAddTier,
 }) => {
   const [tierColor, setTierColor] = useState(item.color);
   const [tierName, setTierName] = useState(item.tierName);
@@ -52,6 +53,20 @@ export const SettingsModal = ({
             className="button remove-items-button"
           >
             Remove Ranked Items
+          </button>
+        </div>
+        <div className="add-tier-buttons">
+          <button
+            onClick={() => handleAddTier(item, 0)}
+            className="button add-button"
+          >
+            Add Tier Above
+          </button>
+          <button
+            onClick={() => handleAddTier(item, 1)}
+            className="button add-button"
+          >
+            Add Tier Below
           </button>
         </div>
       </div>

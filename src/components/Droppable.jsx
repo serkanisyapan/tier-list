@@ -13,6 +13,7 @@ const Droppable = ({
   handleEdit,
   handleChangeOnTier,
   handleReorder,
+  handleAddTier,
 }) => {
   const { setNodeRef } = useDroppable({ id });
   const isStartingTier = items.tierName === "Unranked";
@@ -37,6 +38,7 @@ const Droppable = ({
             handleEdit={handleEdit}
             handleChangeOnTier={handleChangeOnTier}
             handleShowModal={handleShowModal}
+            handleAddTier={handleAddTier}
           />,
           document.body
         )}

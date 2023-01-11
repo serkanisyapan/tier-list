@@ -160,6 +160,18 @@ function App() {
     setTiers(copyTiers);
   };
 
+  const handleAddTier = (item, location) => {
+    let copyTiers = [...tiers];
+    const itemIndex = copyTiers.indexOf(item);
+    copyTiers.splice(itemIndex + location, 0, {
+      id: Math.random(),
+      tierName: "New Tier",
+      color: "#ffc0cb",
+      items: [],
+    });
+    setTiers(copyTiers);
+  };
+
   return (
     <DndContext
       sensors={sensors}
@@ -177,6 +189,7 @@ function App() {
             handleEdit={handleEdit}
             handleChangeOnTier={handleChangeOnTier}
             handleReorder={handleReorder}
+            handleAddTier={handleAddTier}
             key={group.id}
           />
         ))}

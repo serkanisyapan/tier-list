@@ -52,10 +52,7 @@ const Droppable = ({
         items={items.items}
         strategy={rectSortingStrategy}
       >
-        <ul
-          className={isUnrankedTier ? "unranked-droppable" : "droppable"}
-          ref={setNodeRef}
-        >
+        <ul className="droppable" ref={setNodeRef}>
           {items.items.map((item) => (
             <SortableItem key={item} id={item} />
           ))}

@@ -8,18 +8,52 @@
   border: 1px solid black;
 }
 
+.unranked-droppable {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  width: 100%;
+  list-style-type: none;
+  padding: 5px;
+  background-color: rgba(39, 39, 39, 0.831);
+  border: 1px solid black;
+}
+
 .droppable-container {
   display: flex;
   min-height: 92px;
 }
 
 .tier-names {
+  box-sizing: border-box;
   width: 100px;
   display: flex;
-  padding: 6px;
   justify-content: center;
   align-items: center;
   font-size: 18px;
   text-align: center;
-  word-break: normal;
+  word-break: break-all;
+}
+
+@media screen and (max-width: 992px) {
+  .droppable {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  .unranked-droppable {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .droppable {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .unranked-droppable {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+    width: 100%;
+    background-color: rgba(39, 39, 39, 0.831);
+    list-style-type: none;
+    border: 1px solid black;
+  }
 }

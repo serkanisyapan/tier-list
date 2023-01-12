@@ -21,3 +21,10 @@
   cursor: pointer;
   width: 30%;
 }
+
+@media screen and (max-width: 600px) {
+  .reset-all-button {
+    padding: 10px;
+    width: 60%;
+  }
+}

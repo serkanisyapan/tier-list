@@ -16,7 +16,7 @@ const Droppable = ({
   handleAddTier,
 }) => {
   const { setNodeRef } = useDroppable({ id });
-  const isStartingTier = items.tierName === "Unranked";
+  const isUnrankedTier = items.tierName === "Unranked";
   const [showSettingsModal, setShowSettingsModal] = useState(false);
 
   const handleShowModal = () => {
@@ -26,8 +26,8 @@ const Droppable = ({
   return (
     <div
       style={{
-        marginTop: isStartingTier ? "30px" : "",
-        marginBottom: isStartingTier ? "30px" : "",
+        marginTop: isUnrankedTier ? "30px" : "",
+        marginBottom: isUnrankedTier ? "30px" : "",
       }}
       className="droppable-container"
     >
@@ -42,27 +42,32 @@ const Droppable = ({
           />,
           document.body
         )}
-      <div style={{ backgroundColor: items.color }} className="tier-names">
-        <span>{items.tierName}</span>
-      </div>
+      {!isUnrankedTier ? (
+        <div style={{ backgroundColor: items.color }} className="tier-names">
+          <span>{items.tierName}</span>
+        </div>
+      ) : undefined}
       <SortableContext
         id={id}
         items={items.items}
         strategy={rectSortingStrategy}
       >
-        <ul className="droppable" ref={setNodeRef}>
+        <ul
+          className={isUnrankedTier ? "unranked-droppable" : "droppable"}
+          ref={setNodeRef}
+        >
           {items.items.map((item) => (
             <SortableItem key={item} id={item} />
           ))}
         </ul>
       </SortableContext>
-      {!isStartingTier ? (
+      {!isUnrankedTier ? (
         <Settings
           items={items}
           handleReorder={handleReorder}
           handleShowModal={handleShowModal}
         />
-      ) : null}
+      ) : undefined}
     </div>
   );
 };

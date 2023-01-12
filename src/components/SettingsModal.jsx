@@ -37,12 +37,6 @@ export const SettingsModal = ({
         </div>
         <div className="buttons-section">
           <button
-            onClick={() => handleEdit(item.id, tierColor, tierName)}
-            className="button save-button"
-          >
-            Save Changes
-          </button>
-          <button
             onClick={() => handleChangeOnTier(item, "delete")}
             className="button delete-button"
           >
@@ -52,10 +46,10 @@ export const SettingsModal = ({
             onClick={() => handleChangeOnTier(item, "removeItems")}
             className="button remove-items-button"
           >
-            Remove Ranked Items
+            Clear Tier Images
           </button>
         </div>
-        <div className="add-tier-buttons">
+        <div className="buttons-section">
           <button
             onClick={() => handleAddTier(item, 0)}
             className="button add-button"
@@ -69,6 +63,12 @@ export const SettingsModal = ({
             Add Tier Below
           </button>
         </div>
+        <button
+          onClick={() => handleEdit(item.id, tierColor, tierName)}
+          className="button save-button"
+        >
+          Save Changes
+        </button>
       </div>
     </>
   );

@@ -7,7 +7,7 @@ const Item = ({ id, dragOverlay }) => {
 
   return (
     <div style={style} className="item">
-      <img src={id} alt="smash characters" />
+      <img src={id} alt="tekken7 characters" />
     </div>
   );
 };

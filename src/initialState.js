@@ -1,4 +1,6 @@
 import smashcharacters from "./smashcharacters.json";
+import mk11characters from "./mk11characters.json";
+import tekken7characters from "./tekken7characters.json";
 const initialState = [
   { color: "#FFD700", items: [], tierName: "S", id: 1 },
   { color: "#e8d13c", items: [], tierName: "A", id: 2 },
@@ -9,7 +11,7 @@ const initialState = [
   {
     color: "#8ef1c2",
     tierName: "Unranked",
-    items: smashcharacters,
+    items: tekken7characters,
     id: 7,
   },
 ];

@@ -106,12 +106,19 @@ input[type="color"] {
 
 @media screen and (max-width: 600px) {
   .settings-modal {
-    width: 100%;
+    width: 80%;
+    top: 20%;
+    left: 10%;
+  }
+  .input-section {
+    flex-direction: column;
+    align-items: flex-start;
   }
   .buttons-section {
     flex-direction: column;
+    align-items: center;
   }
   .save-button {
-    align-self: start;
+    align-self: center;
   }
 }

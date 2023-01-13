@@ -64,11 +64,6 @@ input[type="color"] {
   margin-top: 5px;
 }
 
-.add-tier-buttons {
-  display: flex;
-  justify-content: space-around;
-}
-
 .button {
   border: none;
   color: white;
@@ -82,6 +77,10 @@ input[type="color"] {
 }
 
 .add-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
   background-color: #a04caf; /* Green */
 }
 

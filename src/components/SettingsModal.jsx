@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { UpArrow, DownArrow } from "./ArrowIcons";
 import "./SettingsModal.css";
 
 export const SettingsModal = ({
@@ -54,13 +55,19 @@ export const SettingsModal = ({
             onClick={() => handleAddTier(item, 0)}
             className="button add-button"
           >
-            Add Tier Above
+            Add Tier{" "}
+            <span>
+              <UpArrow size="16" />
+            </span>
           </button>
           <button
             onClick={() => handleAddTier(item, 1)}
             className="button add-button"
           >
-            Add Tier Below
+            Add Tier
+            <span>
+              <DownArrow size="16" />
+            </span>
           </button>
         </div>
         <button

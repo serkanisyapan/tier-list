@@ -16,21 +16,15 @@ const Droppable = ({
   handleAddTier,
 }) => {
   const { setNodeRef } = useDroppable({ id });
-  const isUnrankedTier = items.tierName === "Unranked";
   const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const isUnrankedTier = items.tierName === "Unranked";
 
   const handleShowModal = () => {
     setShowSettingsModal((prev) => !prev);
   };
 
   return (
-    <div
-      style={{
-        marginTop: isUnrankedTier ? "30px" : "",
-        marginBottom: isUnrankedTier ? "30px" : "",
-      }}
-      className="droppable-container"
-    >
+    <div className={!isUnrankedTier ? "droppable-container" : "unranked-tier"}>
       {showSettingsModal &&
         createPortal(
           <SettingsModal
@@ -52,7 +46,10 @@ const Droppable = ({
         items={items.items}
         strategy={rectSortingStrategy}
       >
-        <ul className="droppable" ref={setNodeRef}>
+        <ul
+          className={!isUnrankedTier ? "droppable" : "unranked-droppable"}
+          ref={setNodeRef}
+        >
           {items.items.map((item) => (
             <SortableItem key={item} id={item} />
           ))}

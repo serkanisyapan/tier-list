@@ -1,6 +1,6 @@
 import { DownArrow, UpArrow } from "./ArrowIcons";
 import settingsButton from "../assets/settings.png";
-import "./Settings.css";
+import "../styles/Settings.css";
 export const Settings = ({ items, handleReorder, handleShowModal }) => {
   return (
     <span className="settings">

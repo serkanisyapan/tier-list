@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { UpArrow, DownArrow } from "./ArrowIcons";
-import "./SettingsModal.css";
+import "../styles/SettingsModal.css";
 
 export const SettingsModal = ({
   item,

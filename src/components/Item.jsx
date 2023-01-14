@@ -1,4 +1,4 @@
-import "./Item.css";
+import "../styles/Item.css";
 
 const Item = ({ id, dragOverlay }) => {
   const style = {
